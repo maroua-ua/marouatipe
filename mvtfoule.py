@@ -96,8 +96,10 @@ def ListeDesCollisions (l):
     res=[]
     for i in l :
         for j in l:
-            if not isSafe (l[i],l[j]) and i!=j:
+            if not isSafe (i,j) and i!=j:
                 res.append([i,j])
+    return res
+
 def main ():
     n=10
     l=positionInitiale(n)
