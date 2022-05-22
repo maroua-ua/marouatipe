@@ -110,13 +110,20 @@ def main ():
         print("list :",l)
         for i in range(len(l)):
             a,b = distance(l[i]),angle(l[i],porte)
+            lc=ListeDesCollisions(l)
+            if i not in lc:
             # print("distance: ",a)
-            print("long: ", l[i])
-            l[i] = [max(a*math.cos(b)-math.cos(b),0),max(a*math.sin(b)-math.sin(b),0),l[i][2],l[i][3]]
-            for j in range(len(l)):
+                print("long: ", l[i])
+                l[i] = [max(a*math.cos(b)-math.cos(b),0),max(a*math.sin(b)-math.sin(b),0),l[i][2],l[i][3]]
+            else :
+                pass
+            '''for j in range(len(l)):
                 if not isSafe(l[i],l[j]) and (l[i][3] > l[j][3]) and i!=j: 
                     c,d = distance2(l[j],porte),angle(l[j],porte)
                     l[i] = [max(c*math.cos(d-(180/20)),0),max(c*math.sin(d-(180/20)),0),l[j][2],l[j][3]]
+          '''
+            
+               
           
         temps=temps+0.5
         # print("somme dist:",sommeDesDistances(l))
