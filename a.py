@@ -3,8 +3,8 @@ import random as rd
 
 # Map settings
 dt=0.1
-n=8
-sizeX=50.
+n=3
+sizeX=10.
 sizeY=sizeX
 doors = [	((0,0),np.array([0.,0.])),
 			((0,0),np.array([sizeX,sizeY]))
@@ -77,9 +77,11 @@ def collision(a,b): #collision between actors
 	return distance(a,b) < size(a,b)
 
 # Detect Actor Collisions
-def actor_collisions(actors):
+def actor_collisions(actors,dc):
 	out=[]
 	for i, a in enumerate(actors):
+		if i in dc :
+			continue
 		for j, b in enumerate(actors):
 			if j<=i:
 				continue
@@ -100,7 +102,9 @@ def door_collisions(actors,doors):
 def solve_door_collisions(actors, collisions):
 	collisions.sort(reverse=True) #if we remove the lower index first, it changes the indices of those above
 	for c in collisions:
-		del actors[c]
+		# del actors[c] #messes up plt
+		actors[c][1] = np.array([-1000,-1000])
+
 
 def solve_actor_collisions(actors, collisions):
 	for i,j in collisions:
@@ -140,19 +144,37 @@ import os
 import time
 import matplotlib.pyplot as plt
 
-while(actors):
+
+plt.ion()
+fig, ax = plt.subplots()
+x = np.array([actor_x(a) for a in actors])
+y = np.array([actor_y(a) for a in actors])
+s = np.array([3141 * actor_size(a)**2 for a in actors])
+sc = ax.scatter(x, y, s)
+plt.xlim(0,sizeX)
+plt.ylim(0,sizeY)
+
+plt.draw()
+
+dc=[]
+while(len(dc)<len(actors)):
 	os.system('clear')
 	for a in actors:
 		print(a)
 
-	dc = door_collisions(actors,doors)
+	dc = dc +door_collisions(actors,doors)
 	solve_door_collisions(actors,dc)
 
-	ac = actor_collisions(actors)
+	ac = actor_collisions(actors,dc)
 	solve_actor_collisions(actors,ac)
 
 
 	update_actor_speeds(actors)
 	update_actor_positions(actors)
 
-	time.sleep(dt)
+	x = np.array([actor_x(a) for a in actors])
+	y = np.array([actor_y(a) for a in actors])
+	sc.set_offsets(np.c_[x,y])
+	fig.canvas.draw_idle()
+	plt.pause(dt)
+	# time.sleep(dt)
