@@ -4,7 +4,7 @@ import time
 import matplotlib.pyplot as plt
 
 # Map settings
-dt=0.01
+dt=0.1
 n=8
 sizeX=50.
 sizeY=sizeX
@@ -13,11 +13,12 @@ doors = [	((0,0),np.array([0.,0.])),
 		]    #R P   X     Y
 
 # Actor settings
-actorSize=2.
+# actorSize= lambda : rd.uniform(1.8, 2.2)
+actorSize= lambda : rd.choice([1.8, 1.9, 2.0, 2.1, 2.2]) 
 actorWeight=actorSize
 pos = np.array([np.array([rd.uniform(0.0, sizeX), rd.uniform(0.0, sizeY)]) for i in range(n)])
 spd = np.array([0.1,0.1])
-actors = [[(actorSize,actorWeight),pos[i],spd] for i in range(n)]
+actors = [[(actorSize(),actorWeight()),pos[i],spd] for i in range(n)]
 
 
 # Functions
