@@ -47,6 +47,19 @@ def distance(a):#distance de la porte
 def distance2(a,b):#distance entre a et b
     return ((a[0]-b[0])**2+(a[1]-b[1])**2)**(1/2)
 
+def setClosetsDoor(agent,listePorte):
+    distanceToDoor = []
+    for p in range(0,len(listePorte)):
+        distanceToDoor.append(distance2(agent,listePorte[p]))
+    return distanceToDoor.index(min(distanceToDoor))
+
+def setDirection(Agent):
+    numeroPorteProche=setClosetsDoor(Agent,listePorte)
+    direction_x=listePorte[numeroPorteProche][0]-Agent[0];
+    direction_y=listePorte[numeroPorteProche][1] -Agent[1]
+    return np.array([direction_x/math.sqrt(direction_x**2+direction_y**2),direction_y/math.sqrt(direction_x**2+direction_y**2)])
+
+
 def isSafe(a,b):
     dist = distance2(a,b)
     som = a[2]+b[2]
