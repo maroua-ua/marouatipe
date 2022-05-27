@@ -41,6 +41,12 @@ def closestDoor(a):
 def size(a,b): #combined size of actors
 	return a[0][0]+b[0][0]
 
+def weight_1(a):
+	return a[0][1]
+
+def weight(a,b):
+	return weight_1(a)+weight_1(b)
+
 def collision(a,b): #collision between
 	return distance(a,b) < size(a,b)
 
@@ -68,7 +74,12 @@ def solve_door_collisions(actors, collisions):
 		del actors[c]
 
 def solve_actor_collisions(actors, collisions):
-	pass
+	for i,j in collisions:
+		a,b= actors[i],actors[j]
+		axe = a[1]-b[1]/np.linalg.norm(a[1]-b[1])
+		amt = size(a,b) - distance(a,b)
+		actors[i][1] = a[1] + axe * amt * weight_1(b)/weight(a,b)
+		actors[j][1] = b[1] - axe * amt * weight_1(a)/weight(a,b)
 
 
 def update_actor_speeds(actors):
@@ -100,6 +111,9 @@ while(actors):
 
 	dc = door_collisions(actors,doors)
 	solve_door_collisions(actors,dc)
+
+	ac = actor_collisions(actors)
+	solve_actor_collisions(actors,ac)
 
 
 	update_actor_speeds(actors)
