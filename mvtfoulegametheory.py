@@ -28,7 +28,7 @@ def init_plot(l):
     x = np.array(Xs)
     y = np.array(Ys)
     s = np.array(Ss)
-    plt.scatter(x, y, s=s)
+    plt.scatter(x, y)
     plt.xticks(np.arange(0, 5, 1))
     plt.yticks(np.arange(0, 5, 1))
     plt.xlim(0,5)
@@ -148,7 +148,7 @@ def main ():
         i=0
         
         while i<len(pos):
-            if distance(pos[i])<0.4:
+            if distancePorte(pos[i])<0.4:
                 print(i, "was removed")
                 pos.pop(i)
                 print(pos)
